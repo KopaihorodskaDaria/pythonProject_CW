@@ -3,6 +3,7 @@ import random
 import numpy as np
 import LR_alg
 import Greedy_alg
+import min_column_max_row as mm
 def print_matrix(matrix):
     for i in range(len(matrix)):
         for j in range(len(matrix[i])):
@@ -78,7 +79,8 @@ def choose_algorithm(matrix_of_parlament, number_of_parliamentarians, number_of_
              model = LR_alg.LR(matrix_of_parlament)
              print("Розв'язок: {} ".format(model.Solve()))
         elif int(option_to_enter) == 2:
-            print("implement")
+            min_covering_set = mm.find_min_covering_set(matrix_of_parlament)
+            print("Розв'язок: {} ".format(min_covering_set))
         elif int(option_to_enter) == 3:
             ga.start(matrix_of_parlament, number_of_parliamentarians, number_of_characteristics, number_of_sign)
         elif int(option_to_enter) == 4:
