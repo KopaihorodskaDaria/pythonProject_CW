@@ -5,11 +5,15 @@ import LR_alg
 import experinents as exp
 import Greedy_alg
 import min_column_max_row as mm
+
+
 def print_matrix(matrix):
     for i in range(len(matrix)):
         for j in range(len(matrix[i])):
             print(matrix[i][j], end='')
         print()
+
+
 def create_matrix_of_parlament(n, K_characteristik, k):
     matrix = np.zeros((n, k), dtype=int)
     # Ensure each column has at least one 1
@@ -28,6 +32,7 @@ def create_matrix_of_parlament(n, K_characteristik, k):
                 remaining_ones -= 1
     return matrix
 
+
 def random_enter():
     number_of_parliamentarians = input('Enter number of parliamentarians: \n >>>> ')
     number_of_characteristics = input('Enter number characteristics of parliamentarians: \n >>>> ')
@@ -41,7 +46,9 @@ def random_enter():
                                                      int(number_of_sign))
     print("Create matrix of people in parlament")
     print_matrix(matrix_of_parlament)
-    return  matrix_of_parlament, number_of_parliamentarians, number_of_characteristics, number_of_sign
+    return matrix_of_parlament, number_of_parliamentarians, number_of_characteristics, number_of_sign
+
+
 def file_enter():
     matrix_of_parlament = np.genfromtxt('matrix.txt', dtype='int', delimiter=' ')
     print_matrix(matrix_of_parlament)
@@ -54,6 +61,8 @@ def file_enter():
     print('Number of sign of parliamentarians: ', number_of_sign)
     print(f'Input matrix of parlament size {number_of_parliamentarians}x{number_of_sign} \n')
     return matrix_of_parlament, number_of_parliamentarians, number_of_characteristics, number_of_sign
+
+
 def manually_enter():
     number_of_parliamentarians = input('Enter number of parliamentarians: \n')
     number_of_characteristics = input('Enter number characteristics of parliamentarians: \n')
@@ -72,38 +81,54 @@ def manually_enter():
     print_matrix(matrix_of_parlament)
     return matrix_of_parlament, number_of_parliamentarians, number_of_characteristics, number_of_sign
 
+
 def choose_algorithm(matrix_of_parlament, number_of_parliamentarians, number_of_characteristics, number_of_sign):
     while True:
         option_to_enter = input(
             "Select option: \n 1. Алгоритм лінійної релаксації \n 2. Алгоритм покриття методом 'мінімальний стовпець -максимальний рядок' \n 3. Генетичний алгоритм \n 4. Жадібний алгоритм \n 5. Exit \n >>>> ")
         if int(option_to_enter) == 1:
-             model = LR_alg.LR(matrix_of_parlament)
-             print("Розв'язок: {} ".format(model.Solve()))
+            model = LR_alg.LR(matrix_of_parlament)
+            print("Розв`язок: {} ".format(model.Solve()))
+            print("Значення ЦФ: ", len(model.Solve()))
         elif int(option_to_enter) == 2:
             min_covering_set = mm.find_min_covering_set(matrix_of_parlament)
-            print("Розв'язок: {} ".format(min_covering_set))
+            print("Розв`язок: {} ".format(min_covering_set))
+            print("Значення ЦФ: ", len(min_covering_set))
         elif int(option_to_enter) == 3:
-            ga.start(matrix_of_parlament, number_of_parliamentarians, number_of_characteristics, number_of_sign)
+            result = ga.start(matrix_of_parlament, number_of_parliamentarians, number_of_characteristics, number_of_sign)
+            print("Розв`язок: {} ".format(result))
+            print("Значення ЦФ: ", len(result))
         elif int(option_to_enter) == 4:
             model = Greedy_alg.Greedy(matrix_of_parlament)
-            print("Розв'язок: {} ".format(model.Solve()))
+            print("Розв`язок: {} ".format(model.Solve()))
+            print("Значення ЦФ: ", len(model.Solve()))
         elif int(option_to_enter) == 5:
             break
         else:
             print("Wrong input")
-def choose_type_of_solve(matrix_of_parlament, number_of_parliamentarians, number_of_characteristics, number_of_sign):
+
+
+def choose_type_of_enter():
     while True:
         option_to_enter = input(
-            "Select option: \n 1. One solve  \n 2. Experiment \n 3. Exit \n >>>> ")
+            "Select option: \n 1. Enter data manually \n 2. Generate data randomly \n 3. Read from the file \n 4. Exit \n >>>> ")
         if int(option_to_enter) == 1:
+            matrix_of_parlament, number_of_parliamentarians, number_of_characteristics, number_of_sign = manually_enter()
             choose_algorithm(matrix_of_parlament, number_of_parliamentarians, number_of_characteristics, number_of_sign)
         elif int(option_to_enter) == 2:
-            choose_type_of_experiment(matrix_of_parlament, number_of_parliamentarians, number_of_characteristics, number_of_sign)
+            matrix_of_parlament, number_of_parliamentarians, number_of_characteristics, number_of_sign = random_enter()
+            choose_algorithm(matrix_of_parlament, number_of_parliamentarians, number_of_characteristics, number_of_sign)
         elif int(option_to_enter) == 3:
+            matrix_of_parlament, number_of_parliamentarians, number_of_characteristics, number_of_sign = file_enter()
+            choose_algorithm(matrix_of_parlament, number_of_parliamentarians, number_of_characteristics, number_of_sign)
+        elif int(option_to_enter) == 4:
             break
         else:
             print("Wrong input")
-def choose_type_of_experiment(matrix_of_parlament, number_of_parliamentarians, number_of_characteristics, number_of_sign):
+    return matrix_of_parlament, number_of_parliamentarians, number_of_characteristics, number_of_sign
+
+
+def choose_type_of_experiment():
     while True:
         option_to_enter = input(
             "Select option: \n 1. Алгоритм лінійної релаксації \n 2. Алгоритм покриття методом 'мінімальний стовпець -максимальний рядок' \n 3."
@@ -113,6 +138,7 @@ def choose_type_of_experiment(matrix_of_parlament, number_of_parliamentarians, n
         elif int(option_to_enter) == 2:
             print("implement")
         elif int(option_to_enter) == 3:
+            matrix_of_parlament, number_of_parliamentarians, number_of_characteristics, number_of_sign = random_enter()
             exp.genetic_alg(matrix_of_parlament)
         elif int(option_to_enter) == 4:
             print("implement")
@@ -126,19 +152,13 @@ def choose_type_of_experiment(matrix_of_parlament, number_of_parliamentarians, n
             print("Wrong input")
 if __name__ == '__main__':
     while True:
-        option_to_enter = input("Select option: \n 1. Enter data manually \n 2. Generate data randomly \n 3. Read from the file \n 4. Exit \n >>>> ")
+        option_to_enter = input(
+            "Select option: \n 1. Working with individual task  \n 2. Experiments \n 3. Exit \n >>>> ")
         if int(option_to_enter) == 1:
-            matrix_of_parlament, number_of_parliamentarians, number_of_characteristics, number_of_sign = manually_enter()
-            choose_type_of_solve(matrix_of_parlament, number_of_parliamentarians, number_of_characteristics, number_of_sign)
+            choose_type_of_enter()
         elif int(option_to_enter) == 2:
-            matrix_of_parlament, number_of_parliamentarians, number_of_characteristics, number_of_sign = random_enter()
-            choose_type_of_solve(matrix_of_parlament, number_of_parliamentarians, number_of_characteristics, number_of_sign)
+            choose_type_of_experiment()
         elif int(option_to_enter) == 3:
-            matrix_of_parlament, number_of_parliamentarians, number_of_characteristics, number_of_sign  = file_enter()
-            choose_type_of_solve(matrix_of_parlament, number_of_parliamentarians, number_of_characteristics, number_of_sign)
-        elif int(option_to_enter) == 4:
             break
         else:
             print("Wrong input")
-
-

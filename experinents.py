@@ -48,6 +48,7 @@ def LR_exp():
         vals[i]= np.mean(time_list[i, :])
 
     print(vals)
+# def time_test():
 
 def genetic_alg(matrix_of_parlament):
     print("Genetic algorithm experience")

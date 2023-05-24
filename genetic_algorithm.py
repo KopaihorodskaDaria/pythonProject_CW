@@ -293,14 +293,13 @@ def get_one_solution(matrix_of_parlament, population ):
         iteration = iteration + 1
     the_best_individ = population[np.argmin(counter_of_useful(population))]
     index_of_parl = []
-    print("The value of the objective function: ", min_useful)
     index = 0
     for i in range(len(population[len(population) - 1])):
         if the_best_individ[i] == 1:
-          index_of_parl.append(i)
-    print(index_of_parl)
+          index_of_parl.append(i+1)
+    return index_of_parl
 
 def start(matrix_of_parlament, number_of_parliamentarians, number_of_characteristics, number_of_sign):
       population = create_population(matrix_of_parlament)
-      get_one_solution(matrix_of_parlament, population)
-
+      index_of_parl = get_one_solution(matrix_of_parlament, population)
+      return index_of_parl
