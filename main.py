@@ -2,6 +2,7 @@ import genetic_algorithm as ga
 import random
 import numpy as np
 import LR_alg
+import experinents as exp
 import Greedy_alg
 import min_column_max_row as mm
 def print_matrix(matrix):
@@ -97,8 +98,29 @@ def choose_type_of_solve(matrix_of_parlament, number_of_parliamentarians, number
         if int(option_to_enter) == 1:
             choose_algorithm(matrix_of_parlament, number_of_parliamentarians, number_of_characteristics, number_of_sign)
         elif int(option_to_enter) == 2:
+            choose_type_of_experiment(matrix_of_parlament, number_of_parliamentarians, number_of_characteristics, number_of_sign)
+        elif int(option_to_enter) == 3:
+            break
+        else:
+            print("Wrong input")
+def choose_type_of_experiment(matrix_of_parlament, number_of_parliamentarians, number_of_characteristics, number_of_sign):
+    while True:
+        option_to_enter = input(
+            "Select option: \n 1. Алгоритм лінійної релаксації \n 2. Алгоритм покриття методом 'мінімальний стовпець -максимальний рядок' \n 3."
+            " Генетичний алгоритм \n 4. Жадібний \n 5. Тест на трудомісткість \n 6. Тест на ефективність \n 7. Exit \n >>>> ")
+        if int(option_to_enter) == 1:
+            print("implement")
+        elif int(option_to_enter) == 2:
             print("implement")
         elif int(option_to_enter) == 3:
+            exp.genetic_alg(matrix_of_parlament)
+        elif int(option_to_enter) == 4:
+            print("implement")
+        elif int(option_to_enter) == 5:
+            print("implement")
+        elif int(option_to_enter) == 6:
+            print("implement")
+        elif int(option_to_enter) == 7:
             break
         else:
             print("Wrong input")
