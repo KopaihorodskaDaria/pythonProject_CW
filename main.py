@@ -50,7 +50,7 @@ def random_enter():
 
 
 def file_enter():
-    path = input('Введіть шлях до файлу до файлу: \n >>>> ')
+    path = input('Введіть шлях до файлу: \n >>>> ')
     matrix_of_parlament = np.genfromtxt(path, dtype='int', delimiter=' ')
     print_matrix(matrix_of_parlament)
     number_of_parliamentarians = len(matrix_of_parlament)
