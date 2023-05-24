@@ -49,7 +49,6 @@ class Greedy:
         for i in f_list:
             if( i in self.features):
                 num +=1
-
         return num
 
 

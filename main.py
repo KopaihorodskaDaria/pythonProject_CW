@@ -101,7 +101,7 @@ def choose_algorithm(matrix_of_parlament, number_of_parliamentarians, number_of_
         elif int(option_to_enter) == 4:
             model = Greedy_alg.Greedy(matrix_of_parlament)
             print("Розв`язок: {} ".format(model.Solve()))
-            print("Значення ЦФ: ", len(model.Solve()))
+            print("Значення ЦФ: ", len(model.Solve()) - 1)
         elif int(option_to_enter) == 5:
             break
         else:
