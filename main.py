@@ -34,44 +34,44 @@ def create_matrix_of_parlament(n, K_characteristik, k):
 
 
 def random_enter():
-    number_of_parliamentarians = input('Enter number of parliamentarians: \n >>>> ')
-    number_of_characteristics = input('Enter number characteristics of parliamentarians: \n >>>> ')
-    number_of_sign = input('Enter number sign of parliamentarians: \n >>>> ')
+    number_of_parliamentarians = input('Введіть кількість парламентарів: \n >>>> ')
+    number_of_characteristics = input('Введіть кількість характеристик парламентарів: \n >>>> ')
+    number_of_sign = input('Введіть кількість ознак: \n >>>> ')
     # number_of_iteration = input('Enter number of iteration to stop: \n')
-    print('You choose: \n ')
-    print('Number of parliamentarians: ', number_of_parliamentarians)
-    print('Number of characteristics of parliamentarians: ', number_of_characteristics)
-    print('Number of sign of parliamentarians: ', number_of_sign)
+    print('Введені дані: \n ')
+    print('Кількість парламентарів: ', number_of_parliamentarians)
+    print('Кількість характеристик парламентарів: ', number_of_characteristics)
+    print('Кількість ознак: ', number_of_sign)
     matrix_of_parlament = create_matrix_of_parlament(int(number_of_parliamentarians), int(number_of_characteristics),
                                                      int(number_of_sign))
-    print("Create matrix of people in parlament")
+    print("Згенерована матриця: ")
     print_matrix(matrix_of_parlament)
     return matrix_of_parlament, number_of_parliamentarians, number_of_characteristics, number_of_sign
 
 
 def file_enter():
-    matrix_of_parlament = np.genfromtxt('matrix.txt', dtype='int', delimiter=' ')
+    path = input('Введіть шлях до файлу до файлу: \n >>>> ')
+    matrix_of_parlament = np.genfromtxt(path, dtype='int', delimiter=' ')
     print_matrix(matrix_of_parlament)
     number_of_parliamentarians = len(matrix_of_parlament)
     number_of_characteristics = np.sum(matrix_of_parlament[0])
     number_of_sign = len(matrix_of_parlament[len(matrix_of_parlament) - 1])
-    print('You write: \n ')
-    print('Number of parliamentarians: ', number_of_parliamentarians)
-    print('Number of characteristics of parliamentarians: ', number_of_characteristics)
-    print('Number of sign of parliamentarians: ', number_of_sign)
-    print(f'Input matrix of parlament size {number_of_parliamentarians}x{number_of_sign} \n')
+    print('Введені дані: \n ')
+    print('Кількість парламентарів: ', number_of_parliamentarians)
+    print('Кількість характеристик парламентарів: ', number_of_characteristics)
+    print('Кількість ознак: ', number_of_sign)
     return matrix_of_parlament, number_of_parliamentarians, number_of_characteristics, number_of_sign
 
 
 def manually_enter():
-    number_of_parliamentarians = input('Enter number of parliamentarians: \n')
-    number_of_characteristics = input('Enter number characteristics of parliamentarians: \n')
-    number_of_sign = input('Enter number sign of parliamentarians: \n')
-    print('You choose: \n ')
-    print('Number of parliamentarians: ', number_of_parliamentarians)
-    print('Number of characteristics of parliamentarians: ', number_of_characteristics)
-    print('Number of sign of parliamentarians: ', number_of_sign)
-    print(f'Input matrix of parlament size {number_of_parliamentarians}x{number_of_sign} \n')
+    number_of_parliamentarians = input('Введіть кількість парламентарів: \n >>>> ')
+    number_of_characteristics = input('Введіть кількість характеристик парламентарів: \n >>>> ')
+    number_of_sign = input('Введіть кількість ознак: \n >>>> ')
+    print('Введені дані: \n ')
+    print('Кількість парламентарів: ', number_of_parliamentarians)
+    print('Кількість характеристик парламентарів: ', number_of_characteristics)
+    print('Кількість ознак: ', number_of_sign)
+    print(f'Введіть матрицю розміром {number_of_parliamentarians}x{number_of_sign} \n')
     matrix_of_parlament = []
     for i in range(int(number_of_parliamentarians)):
         row = input().split()
@@ -85,7 +85,7 @@ def manually_enter():
 def choose_algorithm(matrix_of_parlament, number_of_parliamentarians, number_of_characteristics, number_of_sign):
     while True:
         option_to_enter = input(
-            "Select option: \n 1. Алгоритм лінійної релаксації \n 2. Алгоритм покриття методом 'мінімальний стовпець -максимальний рядок' \n 3. Генетичний алгоритм \n 4. Жадібний алгоритм \n 5. Exit \n >>>> ")
+            "Виберіть розв'язок: \n 1. Алгоритм лінійної релаксації \n 2. Алгоритм покриття методом 'мінімальний стовпець -максимальний рядок' \n 3. Генетичний алгоритм \n 4. Жадібний алгоритм \n 5. Вихід \n >>>> ")
         if int(option_to_enter) == 1:
             model = LR_alg.LR(matrix_of_parlament)
             print("Розв`язок: {} ".format(model.Solve()))
@@ -111,7 +111,7 @@ def choose_algorithm(matrix_of_parlament, number_of_parliamentarians, number_of_
 def choose_type_of_enter():
     while True:
         option_to_enter = input(
-            "Select option: \n 1. Enter data manually \n 2. Generate data randomly \n 3. Read from the file \n 4. Exit \n >>>> ")
+            "Виберіть опцію: \n 1. Ввести дані вручну \n 2. Згенерувати випадковим чином \n 3. Зчитати з файлу \n 4. Вихід \n >>>> ")
         if int(option_to_enter) == 1:
             matrix_of_parlament, number_of_parliamentarians, number_of_characteristics, number_of_sign = manually_enter()
             choose_algorithm(matrix_of_parlament, number_of_parliamentarians, number_of_characteristics, number_of_sign)
@@ -131,10 +131,12 @@ def choose_type_of_enter():
 def choose_type_of_experiment():
     while True:
         option_to_enter = input(
-            "Select option: \n 1. Алгоритм лінійної релаксації \n 2. Алгоритм покриття методом 'мінімальний стовпець -максимальний рядок' \n 3."
-            " Генетичний алгоритм \n 4. Жадібний \n 5. Тест на трудомісткість \n 6. Тест на ефективність \n 7. Exit \n >>>> ")
+            "Виберіть тип експерименту: \n 1. Алгоритм лінійної релаксації \n 2. Алгоритм покриття методом 'мінімальний стовпець -максимальний рядок' \n 3."
+            " Генетичний алгоритм \n 4. Жадібний \n 5. Тест на трудомісткість \n 6. Тест на ефективність \n 7. Вихід \n >>>> ")
         if int(option_to_enter) == 1:
-            print("implement")
+            parl = int(input("Введіть кількість парламентарів: \n"))
+            features = int(input("Введіть кількість ознак: \n"))
+            exp.LR_exp(parl, features)
         elif int(option_to_enter) == 2:
             print("implement")
         elif int(option_to_enter) == 3:
@@ -153,7 +155,7 @@ def choose_type_of_experiment():
 if __name__ == '__main__':
     while True:
         option_to_enter = input(
-            "Select option: \n 1. Working with individual task  \n 2. Experiments \n 3. Exit \n >>>> ")
+            "Виберіть опцію: \n 1. Робота над індивідуальною задачею  \n 2. Експеримент \n 3. Вихід \n >>>> ")
         if int(option_to_enter) == 1:
             choose_type_of_enter()
         elif int(option_to_enter) == 2:

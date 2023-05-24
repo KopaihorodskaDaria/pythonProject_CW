@@ -30,13 +30,13 @@ def create_matrix_of_parlament(n, K_characteristik, k):
                 remaining_ones -= 1
     return matrix
 
-def LR_exp():
-    param = [2, 3, 5]
+def LR_exp(parl, features):
+    param = [2, round(features/4)+1, round(features/2)]
 
     time_list = np.zeros((len(param), 20))
     for i in range(0, 20):
         for j in range(0, len(param)):
-            matrix = create_matrix_of_parlament(10, param[j], 10)
+            matrix = create_matrix_of_parlament(parl, param[j], features)
             start_time = time.time()
             model = LR_alg.LR(matrix)
             model.Solve()
@@ -44,10 +44,21 @@ def LR_exp():
             time_list[j][i] = (time.time()-start_time)
 
     vals = np.zeros(len(param))
+    n = np.arange(0, 20)
     for i in range(0, len(param)):
-        vals[i]= np.mean(time_list[i, :])
+        vals[i] = np.mean(time_list[i, :])
+        plt.plot(n, time_list[i, :], label=param[i])
 
-    print(vals)
+    plt.title("Час виконання алгоритму лінійної релаксації в залежності від кількості характеристик")
+    plt.xlabel("Номер прогону")
+    plt.ylabel("Час")
+    plt.xticks(n)
+    plt.grid()
+    plt.legend()
+
+    plt.show()
+
+
 # def time_test():
 
 def genetic_alg(matrix_of_parlament):

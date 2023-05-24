@@ -36,7 +36,9 @@ class LR:
             b_n = self.table[:, -1]
         z_n = self.table[-1, :]
         while any(z_n[0: self.table.shape[0] - 1] < 0):
-            self.change_z()
+            l = self.change_z()
+            if l != 1:
+                break
             z_n = self.table[-1, :]
 
         result = np.zeros(self.A.shape[1])
@@ -56,7 +58,7 @@ class LR:
         column = z_n[0: self.table.shape[1] - 1].argmin()
         column_list = self.table[:, column]
         if (all(n <= 0 for n in column_list[0:-1])):
-            sys.exit("Can't solve this problem. Target function is unlimited from above")
+            return 0
         b_n = self.table[:, -1]
         column_b = np.array([])
         for i in range(0, len(column_list[0: -1])):
@@ -65,7 +67,7 @@ class LR:
             else:
                 column_b = np.append(column_b, math.inf)
         if (all(n == math.inf for n in column_b)):
-            sys.exit("Cant solve this problem.")
+            return 0
         row = column_b.argmin()
         row_list = self.table[row, :] / self.table[row, column]
         for i in range(0, self.table.shape[0]):
@@ -74,6 +76,7 @@ class LR:
             else:
                 self.table[i, :] = self.table[i, :] - row_list * self.table[i, column]
         self.basis[row] = (column + 1)
+        return 1
 
     def change_b(self):
         b_n = self.table[:, -1]
