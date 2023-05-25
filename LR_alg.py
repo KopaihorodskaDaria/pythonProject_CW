@@ -7,6 +7,7 @@ class LR:
     def __init__(self, A):
         self.A = np.array(A)
         self.table, self.basis = self.tableau()
+        self.n = 0
 
     def adapt(self):
         self.A = self.A.T * -1
@@ -34,12 +35,14 @@ class LR:
         while any(b_n[0:-1] < 0):
             self.change_b()
             b_n = self.table[:, -1]
+            self.n +=1
         z_n = self.table[-1, :]
         while any(z_n[0: self.table.shape[0] - 1] < 0):
             l = self.change_z()
             if l != 1:
                 break
             z_n = self.table[-1, :]
+            self.n +=1
 
         result = np.zeros(self.A.shape[1])
         b_n = self.table[:, -1]

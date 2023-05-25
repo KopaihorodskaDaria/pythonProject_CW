@@ -39,11 +39,9 @@ def LR_exp(parl, features):
     for i in range(0, 20):
         for j in range(0, len(param)):
             matrix = create_matrix_of_parlament(parl, param[j], features)
-            start_time = time.time()
             model = LR_alg.LR(matrix)
             model.Solve()
-            time
-            time_list[j][i] = (time.time() - start_time)
+            time_list[j][i] = model.n
 
     vals = np.zeros(len(param))
     n = np.arange(0, 20)
@@ -51,19 +49,19 @@ def LR_exp(parl, features):
         vals[i] = np.mean(time_list[i, :])
         plt.plot(n, time_list[i, :], label=param[i])
 
-    print("Середній час виконання для різних значень параметру 'кількість характеристик'")
+    print("Середня кількість ітерацій для різних значень параметру 'кількість характеристик'")
     print(f'{param[0]} : {vals[0]},  {param[1]} : {vals[1]},  {param[2]} : {vals[2]}')
 
-    plt.title("Час виконання алгоритму лінійної релаксації в залежності від кількості характеристик")
+    plt.title("Кількість ітерацій алгоритму лінійної релаксації в залежності від кількості характеристик")
     plt.xlabel("Номер прогону")
-    plt.ylabel("Час")
+    plt.ylabel("Кількість ітерацій")
     plt.xticks(n)
     plt.grid()
     plt.legend()
     plt.show()
     parameters = [str(x) for x in param]
-    plt.title("Середній час виконання алгоритму в залежності від кількості характеристик")
-    plt.ylabel("Час")
+    plt.title("Середня кількість ітерацій алгоритму в залежності від кількості характеристик")
+    plt.ylabel("Кількість ітерацій")
     plt.bar(parameters, vals)
     plt.grid()
     plt.show()
