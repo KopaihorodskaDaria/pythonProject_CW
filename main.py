@@ -37,7 +37,6 @@ def random_enter():
     number_of_parliamentarians = input('Введіть кількість парламентарів: \n >>>> ')
     number_of_characteristics = input('Введіть кількість характеристик парламентарів: \n >>>> ')
     number_of_sign = input('Введіть кількість ознак: \n >>>> ')
-    # number_of_iteration = input('Enter number of iteration to stop: \n')
     print('Введені дані: \n ')
     print('Кількість парламентарів: ', number_of_parliamentarians)
     print('Кількість характеристик парламентарів: ', number_of_characteristics)
@@ -81,6 +80,23 @@ def manually_enter():
     print_matrix(matrix_of_parlament)
     return matrix_of_parlament, number_of_parliamentarians, number_of_characteristics, number_of_sign
 
+def enter_data_to_exp_ga():
+    number_of_parliamentarians = input('Введіть кількість парламентарів: \n >>>> ')
+    number_of_characteristics = input('Введіть кількість характеристик парламентарів: \n >>>> ')
+    number_of_sign = input('Введіть кількість ознак: \n >>>> ')
+    size = input('Введіть кількість параметрів до зупинки зупинки алгоритму при сталому рекорді, яких бажаєте протестувати: \n >>>> ')
+    print(f'Введіть {size} параметри, що ознаючають кількість ітерацій до зупинки алгоритму при сталому рекорді : \n')
+    param = [0]*int(size)
+    for i in range(int(size)):
+        print(f"parameter{i+1} = ", sep="", end = "")
+        param[i] = int(input())
+    print('Введені дані: \n ')
+    print('Кількість парламентарів: ', number_of_parliamentarians)
+    print('Кількість характеристик парламентарів: ', number_of_characteristics)
+    print('Кількість ознак: ', number_of_sign)
+    print('Досліджувані параметри: ', param)
+    print('')
+    return int(number_of_parliamentarians), int(number_of_characteristics), int(number_of_sign), param
 
 def choose_algorithm(matrix_of_parlament):
     while True:
@@ -105,7 +121,7 @@ def choose_algorithm(matrix_of_parlament):
         elif int(option_to_enter) == 5:
             break
         else:
-            print("Wrong input")
+            print("Неправильна відповідь")
 
 
 def choose_type_of_enter():
@@ -124,7 +140,7 @@ def choose_type_of_enter():
         elif int(option_to_enter) == 4:
             break
         else:
-            print("Wrong input")
+            print("Неправильна відповідь")
     return matrix_of_parlament
 
 
@@ -140,9 +156,10 @@ def choose_type_of_experiment():
         elif int(option_to_enter) == 2:
             print("implement")
         elif int(option_to_enter) == 3:
-           # matrix_of_parlament, number_of_parliamentarians, number_of_characteristics, number_of_sign = random_enter()
-            exp.genetic_alg()
+            number_of_parliamentarians, number_of_characteristics, number_of_sign, param = enter_data_to_exp_ga()
+            exp.genetic_alg(number_of_parliamentarians, number_of_characteristics, number_of_sign, param)
         elif int(option_to_enter) == 4:
+
             exp.genetic_alg2()
         elif int(option_to_enter) == 5:
              exp.time_test_n()

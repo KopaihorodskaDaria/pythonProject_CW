@@ -61,6 +61,12 @@ def LR_exp(parl, features):
     plt.grid()
     plt.legend()
     plt.show()
+    parameters = [str(x) for x in param]
+    plt.title("Середній час виконання алгоритму в залежності від кількості характеристик")
+    plt.ylabel("Час")
+    plt.bar(parameters, vals)
+    plt.grid()
+    plt.show()
 
 
 def time_test_n():
@@ -155,40 +161,40 @@ def time_test_k():
     # print(vals_min_column_max_row)
 
 
-def genetic_alg():
+def genetic_alg(n , t, K_sign, param ):
     print("Генетичний експеримент")
     print("Параметр: умова завершення роботи алгоритмів")
-    t = 3
-    K_sign = 10
-    n = 20
-    param = [5, 10, 30]
-    matrix = create_matrix_of_parlament(n, t, K_sign)
-    population = ga.create_population(matrix)
-    population_temp = [[0] * len(population[len(population) - 1]) for _ in range(len(population))]
-    population_temp = copy_matrix(population, population_temp)
-    iteration_list = np.zeros((len(param), 20))
-    value_list = np.zeros((len(param), 20))
-    for i in range(20):
+    iteration = 20
+    # population_temp = [[0] * len(population[len(population) - 1]) for _ in range(len(population))]
+    # population_temp = copy_matrix(population, population_temp)
+    iteration_list = np.zeros((len(param), iteration))
+    for i in range(iteration):
+        matrix = create_matrix_of_parlament(n, t, K_sign)
+        population = ga.create_population(matrix)
         for j in range(0, len(param)):
-            population = copy_matrix(population_temp, population)
             iteration_list[j][i] = one_experiment_genetic(matrix, population, param[j])
     ga.print_matrix(iteration_list)
-    print("v")
-    ga.print_matrix(value_list)
-    m = np.arange(0, 20)
+    m = np.arange(0, iteration)
     vals = np.zeros(len(param))
     for i in range(0, len(param)):
         vals[i] = np.mean(iteration_list[i, :])
         plt.plot(m, iteration_list[i, :], label=param[i])
-    print("Середнє значення ЦФ для різних значень параметру 'кількість ітерацій до зупинки'")
-    print(f'{param[0]} : {vals[0]},  {param[1]} : {vals[1]},  {param[2]} : {vals[2]}')
-    plt.xticks(m)
-    # plt.plot(param, vals, label=r'$p = p1$')
     plt.title("Залежність значення ЦФ від кількості ітерацій")
     plt.legend(loc='upper right', fontsize=6)
+    plt.xlabel("Кількість ітерацій")
+    plt.ylabel("Значення ЦФ")
     plt.grid(True)
     plt.show()
-
+    print("Середнє значення ЦФ для різних значень параметру 'кількість ітерацій до зупинки'")
+    for i in range(len(param)):
+        print(f'{param[i]} : {vals[i]}')
+    parameters = [str(x) for x in param]
+    plt.title("Середнє значення ЦФ відповідно до введеного параметра")
+    plt.xlabel("Кількість ітерацій")
+    plt.ylabel("Значення ЦФ")
+    plt.bar(parameters, vals)
+    plt.grid(True)
+    plt.show()
 
 def one_experiment_genetic(matrix_of_parlament, population, param):
     stop_number_of_iteration = param
