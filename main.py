@@ -138,12 +138,13 @@ def choose_type_of_experiment():
         elif int(option_to_enter) == 2:
             print("implement")
         elif int(option_to_enter) == 3:
-            matrix_of_parlament, number_of_parliamentarians, number_of_characteristics, number_of_sign = random_enter()
-            exp.genetic_alg(matrix_of_parlament)
+           # matrix_of_parlament, number_of_parliamentarians, number_of_characteristics, number_of_sign = random_enter()
+            exp.genetic_alg()
         elif int(option_to_enter) == 4:
             print("implement")
         elif int(option_to_enter) == 5:
-            print("implement")
+             exp.time_test_n()
+             exp.time_test_k()
         elif int(option_to_enter) == 6:
             print("implement")
         elif int(option_to_enter) == 7:

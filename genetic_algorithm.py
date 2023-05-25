@@ -5,7 +5,7 @@ import math
 def print_matrix(matrix):
     for i in range(len(matrix)):
         for j in range(len(matrix[i])):
-            print(matrix[i][j], end='')
+            print(matrix[i][j], end='   ')
         print()
 
 def create_population(matrix):
@@ -246,7 +246,7 @@ def get_one_solution(matrix_of_parlament, population ):
           index_of_parl.append(i+1)
     return index_of_parl
 
-def start(matrix_of_parlament, number_of_parliamentarians, number_of_characteristics, number_of_sign):
+def start(matrix_of_parlament):
       population = create_population(matrix_of_parlament)
       index_of_parl = get_one_solution(matrix_of_parlament, population)
       return index_of_parl

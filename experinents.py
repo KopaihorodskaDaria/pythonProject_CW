@@ -12,6 +12,7 @@ def copy_matrix(matrix1, matrix2):
             matrix2[i][j] = matrix1[i][j]
     return matrix2
 
+
 def create_matrix_of_parlament(n, K_characteristik, k):
     matrix = np.zeros((n, k), dtype=int)
     # Ensure each column has at least one 1
@@ -30,6 +31,7 @@ def create_matrix_of_parlament(n, K_characteristik, k):
                 remaining_ones -= 1
     return matrix
 
+
 def LR_exp():
     param = [2, 3, 5]
 
@@ -41,41 +43,147 @@ def LR_exp():
             model = LR_alg.LR(matrix)
             model.Solve()
             time
-            time_list[j][i] = (time.time()-start_time)
+            time_list[j][i] = (time.time() - start_time)
 
     vals = np.zeros(len(param))
     for i in range(0, len(param)):
-        vals[i]= np.mean(time_list[i, :])
+        vals[i] = np.mean(time_list[i, :])
 
     print(vals)
-# def time_test():
 
-def genetic_alg(matrix_of_parlament):
+
+def time_test_n():
+    print("Вплив параметру розмірності задачі на трудомісткість алгоритму")
+    t = 3
+    K_sign = 10
+    param = [5, 10, 20]
+    print("Задані параметри:")
+    print(param)
+    print(f"Для {t} характеристик та {K_sign} ознак")
+    time_list_ga = np.zeros((len(param), 20))
+    time_list_lr = np.zeros((len(param), 20))
+    time_min_column_max_row = np.zeros((len(param), 20))
+    for i in range(0, 20):
+        for j in range(0, len(param)):
+            # Генетичний алгоритм
+            matrix = create_matrix_of_parlament(param[j], t, K_sign)
+            start_time = time.time()
+            ga.start(matrix)
+            time
+            time_list_ga[j][i] = (time.time() - start_time)
+            # Алгоритм лінійної релаксації
+            start_time = time.time()
+            model = LR_alg.LR(matrix)
+            model.Solve()
+            time_list_lr[j][i] = (time.time() - start_time)
+            # Алгоритм мінімальний стовпець -максимальний рядок
+            start_time = time.time()
+            ga.start(matrix)  # сюда
+            time
+            time_min_column_max_row[j][i] = (time.time() - start_time)
+    vals_ga = np.zeros(len(param))
+    for i in range(0, len(param)):
+        vals_ga[i] = np.mean(time_list_ga[i, :])
+    vals_lr = np.zeros(len(param))
+    for i in range(0, len(param)):
+        vals_lr[i] = np.mean(time_list_lr[i, :])
+    # vals_min_column_max_row = np.zeros(len(param)) #потом це можна прибрати
+    # for i in range(0, len(param)):
+    #         vals_min_column_max_row[i] = np.mean(time_min_column_max_row[i, :])
+    print("Генетичний алгоритм")
+    print(vals_ga)
+    print("Алгоритм лінійної релаксації")
+    print(vals_lr)
+    # print("Алгоритм мінімальний стовпець -максимальний рядок") #потом це можна прибрати
+    # print(vals_min_column_max_row)
+
+
+def time_test_k():
+    print("Вплив параметру кількості ознак задачі на трудомісткість алгоритму")
+    t = 3
+    n = 20
+    param = [5, 10, 20]
+    print("Задані параметри:")
+    print(param)
+    print(f"Для {t} характеристик та {n} парламентарів")
+    time_list_ga = np.zeros((len(param), 20))
+    time_list_lr = np.zeros((len(param), 20))
+    time_min_column_max_row = np.zeros((len(param), 20))
+    for i in range(0, 20):
+        for j in range(0, len(param)):
+            # Генетичний алгоритм
+            matrix = create_matrix_of_parlament(n, t, param[j])
+            start_time = time.time()
+            ga.start(matrix)
+            time
+            time_list_ga[j][i] = (time.time() - start_time)
+            # Алгоритм лінійної релаксації
+            start_time = time.time()
+            model = LR_alg.LR(matrix)
+            model.Solve()
+            time_list_lr[j][i] = (time.time() - start_time)
+            # Алгоритм мінімальний стовпець -максимальний рядок
+            start_time = time.time()
+            ga.start(matrix)  # сюда
+            time
+            time_min_column_max_row[j][i] = (time.time() - start_time)
+    vals_ga = np.zeros(len(param))
+    for i in range(0, len(param)):
+        vals_ga[i] = np.mean(time_list_ga[i, :])
+    vals_lr = np.zeros(len(param))
+    for i in range(0, len(param)):
+        vals_lr[i] = np.mean(time_list_lr[i, :])
+    # vals_min_column_max_row = np.zeros(len(param)) #потом це можна прибрати
+    # for i in range(0, len(param)):
+    #         vals_min_column_max_row[i] = np.mean(time_min_column_max_row[i, :])
+    print("Генетичний алгоритм")
+    print(vals_ga)
+    print("Алгоритм лінійної релаксації")
+    print(vals_lr)
+    # print("Алгоритм мінімальний стовпець -максимальний рядок")
+    # print(vals_min_column_max_row)
+
+
+def genetic_alg():
     print("Genetic algorithm experience")
     print("Параметр: умова завершення роботи алгоритмів")
-    population = ga.create_population(matrix_of_parlament)
-    for i in range(5):
-     one_experiment_genetic_alg(matrix_of_parlament, population)
-
-def one_experiment_genetic_alg(matrix_of_parlament, population):
-    p1 = 3
-    p2 = 8
-    p3 = 15
+    t = 3
+    K_sign = 10
+    n = 20
+    param = [5, 10, 30]
+    matrix = create_matrix_of_parlament(n, t, K_sign)
+    population = ga.create_population(matrix)
     population_temp = [[0] * len(population[len(population) - 1]) for _ in range(len(population))]
     population_temp = copy_matrix(population, population_temp)
-    stop_number_of_iteration = [p1, p2, p3]
+    iteration_list = np.zeros((len(param), 100))
+    value_list = np.zeros((len(param), 100))
+    for i in range(100):
+        for j in range(0, len(param)):
+            population = copy_matrix(population_temp, population)
+            iteration_list[j][i], value_list[i] = one_experiment_genetic(matrix, population, param[j])
+    ga.print_matrix(iteration_list)
+    print("v")
+    ga.print_matrix(value_list)
+    vals = np.zeros(len(param))
+    for i in range(0, len(param)):
+        vals[i] = np.mean(iteration_list[i, :])
+    print("new")
+    print(vals)
+    plt.plot(param, vals, label=r'$p = p1$')
+    plt.title('$Iteration of stop$')
+    plt.legend(loc='upper right', fontsize=6)
+    plt.grid(True)
+    plt.show()
+
+
+def one_experiment_genetic(matrix_of_parlament, population, param):
+    stop_number_of_iteration = param
     list_of_value1 = []
     list_of_iteration1 = []
-    list_of_value2 = []
-    list_of_iteration2 = []
-    list_of_value3 = []
-    list_of_iteration3 = []
-    for p in range(len(stop_number_of_iteration)):
-       iteration = 0
-       number_of_iteration_to_stop = 0
-       population = copy_matrix(population_temp, population)
-       prev_min_useful = np.min(ga.counter_of_useful(population))
-       while True:
+    iteration = 0
+    number_of_iteration_to_stop = 0
+    prev_min_useful = np.min(ga.counter_of_useful(population))
+    while True:
         first_parent, second_parent = ga.select_parents(population)
         first_child, second_child = ga.crossingover(matrix_of_parlament, first_parent, second_parent)
         first_child, second_child = ga.mutation(matrix_of_parlament, first_child, second_child)
@@ -86,27 +194,9 @@ def one_experiment_genetic_alg(matrix_of_parlament, population):
             number_of_iteration_to_stop = number_of_iteration_to_stop + 1
         else:
             prev_min_useful = min_useful
-        if (number_of_iteration_to_stop == stop_number_of_iteration[p]):
+        if (number_of_iteration_to_stop == stop_number_of_iteration):
             break
         iteration = iteration + 1
-        if p == 0:
-          list_of_value1.append(np.min(ga.counter_of_useful(population)))
-          list_of_iteration1.append(iteration)
-        if p == 1:
-          list_of_value2.append(np.min(ga.counter_of_useful(population)))
-          list_of_iteration2.append(iteration)
-        if p == 2:
-          list_of_value3.append(np.min(ga.counter_of_useful(population)))
-          list_of_iteration3.append(iteration)
-
-    plt.plot(list_of_iteration1, list_of_value1, label = r'$p = p1$')
-    plt.plot(list_of_iteration2, list_of_value2,  label = r'$p = p2$')
-    plt.plot(list_of_iteration3, list_of_value3,  label = r'$p = p3$')
-    plt.title('$Iteration of stop$')
-    plt.legend(loc = 'upper right', fontsize = 6)
-    plt.grid(True)
-    plt.show()
-
-
-
-
+        list_of_value1.append(np.min(ga.counter_of_useful(population)))
+        list_of_iteration1.append(iteration)
+    return np.min(ga.counter_of_useful(population)), list_of_value1
