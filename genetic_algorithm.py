@@ -171,33 +171,33 @@ def get_one_solution_with_print(matrix_of_parlament, population ):
     number_of_iteration_to_stop = 0
     stop_number_of_iteration = 20
     prev_min_useful = np.min(counter_of_useful(population))
-    print("The value of the objective function: ", prev_min_useful)
+    print("Значення ЦФ: ", prev_min_useful)
     while True:
         print(f'----- Iteration № {iteration} -----')
 
-        print("Selected parents")
+        print("Вибір батьків")
         first_parent, second_parent = select_parents(population)
-        print("First parent: ", first_parent)
-        print("Second parent: ", second_parent)
+        print("Перший батько: ", first_parent)
+        print("Другий батько: ", second_parent)
 
-        print("Crossingover")
+        print("Одноточковий кросинговер")
         first_child, second_child = crossingover(matrix_of_parlament, first_parent, second_parent)
-        print("First child: ", first_child)
-        print("Second child: ", second_child)
+        print("Перша дитина: ", first_child)
+        print("Друга дитина: ", second_child)
 
-        print("Mutation with 50% probability")
+        print("Мутація із 50% вірогідністю")
         first_child, second_child = mutation(matrix_of_parlament, first_child, second_child)
-        print("First child: ", first_child)
-        print("Second child: ", second_child)
+        print("Перша дитина: ", first_child)
+        print("Друга дитина: ", second_child)
 
-        print("Update population")
+        print("Оновлення популяції")
         new_population = update_population(population, first_child, second_child)
         population = new_population
         print_matrix(population)
 
         min_useful = np.min(counter_of_useful(population))
-        print("The value of the objective function: ", min_useful)
-        print("Individ with the best value of the objective function: ", population[np.argmin(counter_of_useful(population))])
+        print("Значення ЦФ: ", min_useful)
+        print("Особина із найкращим значенням ЦФ на потомній ітерації: ", population[np.argmin(counter_of_useful(population))])
         if(min_useful == prev_min_useful):
             number_of_iteration_to_stop = number_of_iteration_to_stop + 1
         else:
@@ -207,17 +207,15 @@ def get_one_solution_with_print(matrix_of_parlament, population ):
         iteration = iteration + 1
     the_best_individ = population[np.argmin(counter_of_useful(population))]
     print("\n-----Result-----")
-    print("Matrix of people in parlament")
+    print("Матриця людей в парламеті")
     print_matrix(matrix_of_parlament)
-    print("Individ")
+    print("Особина")
     print(the_best_individ)
-    print("cov")
-    print(get_covered_sign(matrix_of_parlament, the_best_individ ))
-    print("The value of the objective function: ", min_useful)
-    print("Parlamentaries in comission: ")
+    print("Значення ЦФ: ", min_useful)
+    print("Парламентарі в комісії: ")
     for i in range(len(population[len(population) - 1])):
         if the_best_individ[i] == 1:
-           print(f"Person with index №{i}: ",  matrix_of_parlament[i])
+           print(f"Парламентарь №{i+1}: ",  matrix_of_parlament[i])
 
 def get_one_solution(matrix_of_parlament, population ):
     iteration = 0

@@ -82,7 +82,7 @@ def manually_enter():
     return matrix_of_parlament, number_of_parliamentarians, number_of_characteristics, number_of_sign
 
 
-def choose_algorithm(matrix_of_parlament, number_of_parliamentarians, number_of_characteristics, number_of_sign):
+def choose_algorithm(matrix_of_parlament):
     while True:
         option_to_enter = input(
             "Виберіть розв'язок: \n 1. Алгоритм лінійної релаксації \n 2. Алгоритм покриття методом 'мінімальний стовпець -максимальний рядок' \n 3. Генетичний алгоритм \n 4. Жадібний алгоритм \n 5. Вихід \n >>>> ")
@@ -95,7 +95,7 @@ def choose_algorithm(matrix_of_parlament, number_of_parliamentarians, number_of_
             print("Розв`язок: {} ".format(min_covering_set))
             print("Значення ЦФ: ", len(min_covering_set))
         elif int(option_to_enter) == 3:
-            result = ga.start(matrix_of_parlament, number_of_parliamentarians, number_of_characteristics, number_of_sign)
+            result = ga.start(matrix_of_parlament)
             print("Розв`язок: {} ".format(result))
             print("Значення ЦФ: ", len(result))
         elif int(option_to_enter) == 4:
@@ -114,18 +114,18 @@ def choose_type_of_enter():
             "Виберіть опцію: \n 1. Ввести дані вручну \n 2. Згенерувати випадковим чином \n 3. Зчитати з файлу \n 4. Вихід \n >>>> ")
         if int(option_to_enter) == 1:
             matrix_of_parlament, number_of_parliamentarians, number_of_characteristics, number_of_sign = manually_enter()
-            choose_algorithm(matrix_of_parlament, number_of_parliamentarians, number_of_characteristics, number_of_sign)
+            choose_algorithm(matrix_of_parlament)
         elif int(option_to_enter) == 2:
             matrix_of_parlament, number_of_parliamentarians, number_of_characteristics, number_of_sign = random_enter()
-            choose_algorithm(matrix_of_parlament, number_of_parliamentarians, number_of_characteristics, number_of_sign)
+            choose_algorithm(matrix_of_parlament)
         elif int(option_to_enter) == 3:
             matrix_of_parlament, number_of_parliamentarians, number_of_characteristics, number_of_sign = file_enter()
-            choose_algorithm(matrix_of_parlament, number_of_parliamentarians, number_of_characteristics, number_of_sign)
+            choose_algorithm(matrix_of_parlament)
         elif int(option_to_enter) == 4:
             break
         else:
             print("Wrong input")
-    return matrix_of_parlament, number_of_parliamentarians, number_of_characteristics, number_of_sign
+    return matrix_of_parlament
 
 
 def choose_type_of_experiment():
@@ -143,7 +143,7 @@ def choose_type_of_experiment():
            # matrix_of_parlament, number_of_parliamentarians, number_of_characteristics, number_of_sign = random_enter()
             exp.genetic_alg()
         elif int(option_to_enter) == 4:
-            print("implement")
+            exp.genetic_alg2()
         elif int(option_to_enter) == 5:
              exp.time_test_n()
              exp.time_test_k()
@@ -152,7 +152,7 @@ def choose_type_of_experiment():
         elif int(option_to_enter) == 7:
             break
         else:
-            print("Wrong input")
+            print("Неправильна відповідь")
 if __name__ == '__main__':
     while True:
         option_to_enter = input(
@@ -164,4 +164,4 @@ if __name__ == '__main__':
         elif int(option_to_enter) == 3:
             break
         else:
-            print("Wrong input")
+            print("Неправильна відповідь")
