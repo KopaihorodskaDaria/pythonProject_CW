@@ -79,7 +79,7 @@ def time_test_n():
     time_list_lr = np.zeros((len(param), iteration))
     time_min_column_max_row = np.zeros((len(param), iteration))
     time_greedy_alg = np.zeros((len(param), iteration))
-
+    fig = plt.figure(figsize=(10, 5))
     for i in range(0, iteration):
         for j in range(0, len(param)):
             # Генетичний алгоритм
@@ -95,12 +95,11 @@ def time_test_n():
             # Алгоритм мінімальний стовпець -максимальний рядок
             start_time = time.time()
             min_column_max_row.find_min_covering_set(matrix)
-            time
             time_min_column_max_row[j][i] = (time.time() - start_time)
             # Жадібний алгоритм
             start_time = time.time()
-            a = Greedy_alg.Greedy(matrix)
-            time
+            model = Greedy_alg.Greedy(matrix)
+            model.Solve()
             time_greedy_alg[j][i] = (time.time() - start_time)
     m = np.arange(0, iteration)
     vals_ga = np.zeros(len(param))
@@ -113,7 +112,8 @@ def time_test_n():
         vals_lr[i] = np.mean(time_list_lr[i, :])
         vals_min_column_max_row[i] = np.mean(time_min_column_max_row[i, :])
         vals_greedy_alg[i] = np.mean(time_greedy_alg[i, :])
-        plt.title(f"Час роботи алгоритмів для значення n = {param[i]}")
+        plt.subplot(1, 3, i+1)
+        plt.title(f"n = {param[i]}")
         plt.plot(m, time_list_ga[i, :], label= "Генетичний алгоритм")
         plt.plot(m, time_list_lr[i, :], label= "Лінійної релаксації")
         plt.plot(m, time_min_column_max_row[i, :], label="Мін. рядок -макс. стовпець")
@@ -121,8 +121,9 @@ def time_test_n():
         plt.xlabel("Кількість ітерацій")
         plt.ylabel("Час в ms")
         plt.grid(True)
-        plt.legend(loc='upper right', fontsize=6)
-        plt.show()
+    plt.legend(loc='center', fontsize=6)
+    plt.suptitle(f"Час роботи алгоритмів для значення різних значень параметру")
+    plt.show()
 
     print("Середній час роботи алгоритму в залежності від кількості ознак")
     print("Генетичний алгоритм")
@@ -167,7 +168,8 @@ def time_test_k():
             time_min_column_max_row[j][i] = (time.time() - start_time)
             # Жадібний алгоритм
             start_time = time.time()
-            Greedy_alg.Greedy(matrix)
+            model = Greedy_alg.Greedy(matrix)
+            model.Solve()
             time
             time_greedy_alg[j][i] = (time.time() - start_time)
     m = np.arange(0, iteration)
@@ -181,7 +183,8 @@ def time_test_k():
         vals_lr[i] = np.mean(time_list_lr[i, :])
         vals_min_column_max_row[i] = np.mean(time_min_column_max_row[i, :])
         vals_greedy_alg[i] = np.mean(time_greedy_alg[i, :])
-        plt.title(f"Час роботи алгоритмів для значення k = {param[i]}")
+        plt.subplot(1, 3, i + 1)
+        plt.title(f" {param[i]}")
         plt.plot(m, time_list_ga[i, :], label="Генетичний алгоритм")
         plt.plot(m, time_list_lr[i, :], label="Лінійної релаксації")
         plt.plot(m, time_min_column_max_row[i, :], label="Мін. рядок -макс. стовпець")
@@ -189,8 +192,9 @@ def time_test_k():
         plt.xlabel("Кількість ітерацій")
         plt.ylabel("Час в ms")
         plt.grid(True)
-        plt.legend(loc='upper right', fontsize=6)
-        plt.show()
+    plt.suptitle(f"Час роботи алгоритмів для різних значень параметру")
+    plt.legend(loc='center', fontsize=6)
+    plt.show()
 
     print("Середній час роботи алгоритму в залежності від кількості парламентарів")
     print("Генетичний алгоритм")
@@ -352,153 +356,20 @@ def min_max_experiment2():
     plt.show()
 
 def precision_test_1():
-    global precision_list_lr, precision_list_min_column_max_row
-    t = 3
-    K_sign = 6
-    param = [5, 10, 15]
-    print("Вплив параметру розмірності задачі на ефективність алгоритму")
-    print("Задані параметри:")
-    print(param)
-    print(f"Для {t} характеристик та {K_sign} ознак")
-
-    deviations_ga = []
-    deviations_lr = []
-    deviations_min_column_max_row = []
-    deviations_gr = []
-
-    for i in range(1, 21):
-        avg_ga = 0
-        avg_lr = 0
-        avg_min_column_max_row = 0
-        avg_gr = 0
-
-        for j in range(len(param)):
-            matrix = create_matrix_of_parlament(param[j], t, K_sign)
-
-            # Генетичний алгоритм
-            result_ga = ga.start(matrix)
-            precision_list_ga = len(result_ga)
-            avg_ga += precision_list_ga
-
-            # Алгоритм лінійної релаксації
-            model = LR_alg.LR(matrix)
-            result_lr = model.Solve()
-            precision_list_lr = len(result_lr)
-            avg_lr += precision_list_lr
-
-            # Алгоритм мінімальний стовпець - максимальний рядок
-            result_min_column_max_row = min_column_max_row.find_min_covering_set(matrix)
-            precision_list_min_column_max_row = len(result_min_column_max_row)
-            avg_min_column_max_row += precision_list_min_column_max_row
-
-            # Жадібний алгоритм
-            model = Greedy_alg.Greedy(matrix)
-            result_gr = model.Solve()
-            precision_list_gr = len(result_gr)
-            avg_gr += precision_list_gr
-            avg_ga /= 20
-            avg_lr /= 20
-            avg_min_column_max_row /= 20
-            avg_gr /= 20
-            deviations_ga.append(avg_ga)
-            deviations_lr.append(avg_lr)
-            deviations_min_column_max_row.append(avg_min_column_max_row)
-            deviations_gr.append(avg_gr)
-
-    deviation_ga_avg = np.mean(deviations_ga)
-    deviation_lr_avg = np.mean(deviations_lr)
-    deviation_min_column_max_row_avg = np.mean(deviations_min_column_max_row)
-    deviation_gr_avg = np.mean(deviations_gr)
-
-    print("Average Deviations:")
-    print("Genetic Algorithm:", deviation_ga_avg)
-    print("Linear Relaxation Algorithm:", deviation_lr_avg)
-    print("Minimum Column Maximum Row Algorithm:", deviation_min_column_max_row_avg)
-    print("Greedy Algorithm:", deviation_gr_avg)
-
-
-def precision_test_2():
-    global precision_list_lr, precision_list_min_column_max_row
-    t = 3
-    n = 20
-    param = [6, 12, 18]
-    print("Вплив параметру розмірності задачі на ефективність алгоритму")
-    print("Задані параметри:")
-    print(param)
-    print(f"Для {t} характеристик та {n} ознак")
-
-    deviations_ga = []
-    deviations_lr = []
-    deviations_min_column_max_row = []
-    deviations_gr = []
-
-    for i in range(1, 21):
-        avg_ga = 0
-        avg_lr = 0
-        avg_min_column_max_row = 0
-        avg_gr = 0
-
-        for j in range(len(param)):
-            matrix = create_matrix_of_parlament(n, t, param[j])
-
-            # Генетичний алгоритм
-            result_ga = ga.start(matrix)
-            precision_list_ga = len(result_ga)
-            avg_ga += precision_list_ga
-
-            # Алгоритм лінійної релаксації
-            model = LR_alg.LR(matrix)
-            result_lr = model.Solve()
-            precision_list_lr = len(result_lr)
-            avg_lr += precision_list_lr
-
-            # Алгоритм мінімальний стовпець - максимальний рядок
-            result_min_column_max_row = min_column_max_row.find_min_covering_set(matrix)
-            precision_list_min_column_max_row = len(result_min_column_max_row)
-            avg_min_column_max_row += precision_list_min_column_max_row
-
-            # Жадібний алгоритм
-            model = Greedy_alg.Greedy(matrix)
-            result_gr = model.Solve()
-            precision_list_gr = len(result_gr)
-            avg_gr += precision_list_gr
-
-            avg_ga /= 20
-            avg_lr /= 20
-            avg_min_column_max_row /= 20
-            avg_gr /= 20
-            deviations_ga.append(avg_ga)
-            deviations_lr.append(avg_lr)
-            deviations_min_column_max_row.append(avg_min_column_max_row)
-            deviations_gr.append(avg_gr)
-
-    deviation_ga_avg = np.mean(deviations_ga)
-    deviation_lr_avg = np.mean(deviations_lr)
-    deviation_min_column_max_row_avg = np.mean(deviations_min_column_max_row)
-    deviation_gr_avg = np.mean(deviations_gr)
-
-    print("Average Deviations:")
-    print("Genetic Algorithm:", deviation_ga_avg)
-    print("Linear Relaxation Algorithm:", deviation_lr_avg)
-    print("Minimum Column Maximum Row Algorithm:", deviation_min_column_max_row_avg)
-    print("Greedy Algorithm:", deviation_gr_avg)
-
-
-def precision_test_3():
     global CFsum_min_column_max_row, CFsum_lr, CFsum_ga, CFsum_gr
     print("Дослідження впливу кількості парламентарів на ефективність алгоритмів")
     t = 10  # Розмірність задачі
     K = 20  # кількість ознак
     param = [10, 15, 20]
     list_cf = np.ones((3, 20))
-
+    fig, ax = plt.subplots(1, 3, figsize=[10, 5])
+    alg_list = ["L1", "L2", "L3", "L4"]
     for j in range(len(param)):
         CFsum_lr = 0
         CFsum_min_column_max_row = 0
         CFsum_ga = 0
         CFavg = 0
         CFsum_gr = 0
-
         for i in range(1, 21):
             matrix = create_matrix_of_parlament(param[j], t,K )
             # Розв'язок задачі P алгоритмом "Жадібний алгоритм"
@@ -529,28 +400,36 @@ def precision_test_3():
         CFavg3 = CFsum_min_column_max_row / 20
         CFavg4 = CFsum_gr / 20
         CFAvr = (CFavg1+ CFavg2 +  CFavg3+  CFavg4)/4
-        CF1 = abs(CFavg1 - CFAvr) / CFAvr
-        CF2 = abs(CFavg2 - CFAvr) / CFAvr
-        CF3 = abs(CFavg3 - CFAvr) / CFAvr
-        CF4 = abs(CFavg4 - CFAvr) / CFAvr
+        CF1 = (CFavg1 - CFAvr) / CFAvr
+        CF2 = (CFavg2 - CFAvr) / CFAvr
+        CF3 = (CFavg3 - CFAvr) / CFAvr
+        CF4 = (CFavg4 - CFAvr) / CFAvr
+        cf_list = [CF1, CF2, CF3, CF4]
 
         print(f"Параметр = {param[j]}:")
         print(f"Лінійна релаксація: {CF1}")
         print(f"Генетичний алгоритм: {CF2}")
-        print(f"Мінімальний стовпець - максимальний рядок: {CF3}")
+        print(f"Мінімальний стовпець максимальний рядок: {CF3}")
         print(f"Жадібний алгоритм: {CF4}")
         print()
 
+        ax[j].bar(alg_list, cf_list)
+        ax[j].set_title(str(param[j]))
+
+    fig.suptitle("Значення середнього відхилення ЦФ при різній кількості парламентарів")
+    plt.show()
 
 
-def precision_test_4():
+
+def precision_test_2():
     global CFsum_min_column_max_row, CFsum_lr, CFsum_ga, CFsum_gr
     print("Дослідження впливу кількості ознак на ефективність алгоритмів")
     t = 5
     n = 20
     param = [10, 15, 20]
     list_cf = np.ones((3, 20))
-
+    fig, ax = plt.subplots(1, 3, figsize=[10, 5])
+    alg_list = ["L1", "L2", "L3", "L4"]
     for j in range(len(param)):
         CFsum_lr = 0
         CFsum_min_column_max_row = 0
@@ -588,10 +467,11 @@ def precision_test_4():
         CFavg3 = CFsum_min_column_max_row / 20
         CFavg4 = CFsum_gr / 20
         CFAvr = (CFavg1+ CFavg2 +  CFavg3+  CFavg4)/4
-        CF1 = abs(CFavg1 - CFAvr) / CFAvr
-        CF2 = abs(CFavg2 - CFAvr) / CFAvr
-        CF3 = abs(CFavg3 - CFAvr) / CFAvr
-        CF4 = abs(CFavg4 - CFAvr) / CFAvr
+        CF1 = (CFavg1 - CFAvr) / CFAvr
+        CF2 = (CFavg2 - CFAvr) / CFAvr
+        CF3 = (CFavg3 - CFAvr) / CFAvr
+        CF4 = (CFavg4 - CFAvr) / CFAvr
+        cf_list = [CF1, CF2, CF3, CF4]
 
         print(f"Параметр = {param[j]}:")
         print(f"Лінійна релаксація: {CF1}")
@@ -600,8 +480,14 @@ def precision_test_4():
         print(f"Жадібний алгоритм: {CF4}")
         print()
 
+        ax[j].bar(alg_list, cf_list)
+        ax[j].set_title(str(param[j]))
 
-def precision_test_5():
+    fig.suptitle("Значення середнього відхилення ЦФ при різній кількості ознак")
+    plt.show()
+
+
+def precision_test_3():
         global CFsum_min_column_max_row, CFsum_lr, CFsum_ga, CFsum_gr
         print("Дослідження впливу параметрів задачі на ефективність алгоритмів")
         n = 30
@@ -609,6 +495,8 @@ def precision_test_5():
         param = [2, 7, 15]
         list_cf = np.ones((3, 20))
 
+        fig, ax = plt.subplots(1, 3, figsize=[10, 5])
+        alg_list = ["L1", "L2", "L3", "L4"]
         for j in range(len(param)):
             CFsum_lr = 0
             CFsum_min_column_max_row = 0
@@ -646,10 +534,11 @@ def precision_test_5():
             CFavg3 = CFsum_min_column_max_row / 20
             CFavg4 = CFsum_gr / 20
             CFAvr = (CFavg1 + CFavg2 + CFavg3 + CFavg4) / 4
-            CF1 = abs(CFavg1 - CFAvr) / CFAvr
-            CF2 = abs(CFavg2 - CFAvr) / CFAvr
-            CF3 = abs(CFavg3 - CFAvr) / CFAvr
-            CF4 = abs(CFavg4 - CFAvr) / CFAvr
+            CF1 = (CFavg1 - CFAvr) / CFAvr
+            CF2 = (CFavg2 - CFAvr) / CFAvr
+            CF3 = (CFavg3 - CFAvr) / CFAvr
+            CF4 = (CFavg4 - CFAvr) / CFAvr
+            cf_list = [CF1, CF2, CF3, CF4]
 
             print(f"Параметр = {param[j]}:")
             print(f"Лінійна релаксація: {CF1}")
@@ -657,6 +546,12 @@ def precision_test_5():
             print(f"Мінімальний стовпець - максимальний рядок: {CF3}")
             print(f"Жадібний алгоритм: {CF4}")
             print()
+
+            ax[j].bar(alg_list, cf_list)
+            ax[j].set_title(str(param[j]))
+
+        fig.suptitle("Значення середнього відхилення ЦФ при різній кількості характеристик")
+        plt.show()
 
     # # Побудова графіка
     # x = np.arange(1, 21)

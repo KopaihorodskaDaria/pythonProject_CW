@@ -165,10 +165,10 @@ def choose_type_of_experiment():
             print("Вплив кількості ознак задачі на трудомісткість алгоритму")
             exp.time_test_k()
         elif int(option_to_enter) == 5:
-            exp.precision_test_3()
-            exp.precision_test_4()
+            exp.precision_test_1()
+            exp.precision_test_2()
         elif int(option_to_enter) == 6:
-            exp.precision_test_5()
+            exp.precision_test_3()
         elif int(option_to_enter) == 7:
             break
         else:
