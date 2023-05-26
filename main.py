@@ -14,17 +14,17 @@ def print_matrix(matrix):
         print()
 
 
-def create_matrix_of_parlament(n, K_characteristik, k):
+def create_matrix_of_parlament(n, t, k):
     matrix = np.zeros((n, k), dtype=int)
     # Ensure each column has at least one 1
     for j in range(k):
         while np.sum(matrix[:, j]) == 0:
             row_index = random.randint(0, n - 1)
-            if np.sum(matrix[row_index, :]) < K_characteristik:
+            if np.sum(matrix[row_index, :]) < t:
                 matrix[row_index, j] = 1
     # Add K random 1s to each row
     for i in range(n):
-        remaining_ones = K_characteristik - np.sum(matrix[i, :])
+        remaining_ones = t - np.sum(matrix[i, :])
         while remaining_ones > 0:
             column_index = random.randint(0, k - 1)
             if matrix[i, column_index] == 0:
