@@ -26,7 +26,7 @@ def create_matrix_of_parlament(n, K_characteristik, k):
         remaining_ones = K_characteristik - np.sum(matrix[i, :])
         while remaining_ones > 0:
             column_index = random.randint(0, k - 1)
-            if matrix[i, column_index] == 0 and np.sum(matrix[:, column_index]) < n:
+            if matrix[i, column_index] == 0:
                 matrix[i, column_index] = 1
                 remaining_ones -= 1
     return matrix
