@@ -154,6 +154,9 @@ def choose_type_of_experiment():
             features = int(input("Введіть кількість ознак: \n"))
             exp.LR_exp(parl, features)
         elif int(option_to_enter) == 2:
+            print("Дослідження ефуктивності алгоритму")
+            exp.min_max_experiment2()
+            print("Дослідження трудомісткості алгоритму")
             n_values, results = exp.min_c_max_r_experiment()
             exp.plot_results(n_values, results)
         elif int(option_to_enter) == 3:

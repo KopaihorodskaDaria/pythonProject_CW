@@ -1,3 +1,5 @@
+import statistics
+
 import numpy as np
 import random
 import time
@@ -225,7 +227,8 @@ def one_experiment_genetic(matrix_of_parlament, population, param):
 
 def min_c_max_r_experiment():
     n_values = [5, 15, 35]  # Кількість рядків (парламентарів)
-    k = 10  # Кількість стовпців
+    K = 10  # Кількість стовпців
+    t = 2
     runs = 20  # Кількість прогонів для кожного значення парламентарів
 
     results = []  # Збереження результатів
@@ -234,7 +237,7 @@ def min_c_max_r_experiment():
         total_times = []
         print(f"Експеримент для кількості парламентарів n = {n}:")
         for run in range(1, runs + 1):
-            matrix = create_matrix_of_parlament(n, k, k)
+            matrix = create_matrix_of_parlament(n, t, K)
             start_time = time.time()
             min_column_max_row.find_min_covering_set(matrix)
             end_time = time.time()
@@ -243,7 +246,7 @@ def min_c_max_r_experiment():
             print(f"Прогін {run}: {elapsed_time:.8f} ")
 
         avg_time = sum(total_times) / runs
-        print(f"Середній час для n = {n}: {avg_time} ")
+        print(f"Середній час виконання для n = {n}: {avg_time} ")
         results.append(total_times)
 
     return n_values, results
@@ -257,12 +260,57 @@ def plot_results(n_values, results):
     plt.xticks(range(1, 21))
     plt.xlabel('Номер прогону')
     plt.ylabel('Час виконання (секунди)')
-    plt.title("Час виконання алгоритму в залежності від кількості парламентарів")
+    plt.title('Час виконання алгоритму в залежності від "кількості парламентарів"( дослідження трудомісткості алгоритму)')
     plt.legend()
     plt.grid(True)
     plt.show()
 
+def min_max_experiment2():
+    n_values = [5, 15, 55]  # Кількість рядків (парламентарів)
+    K = 10  # Кількість стовпців
+    t = 2
+    runs = 20  # Кількість прогонів для кожного значення парламентарів
 
+    results = []  # Збереження результатів
+    cf_values = []  # Збереження значень CF
+
+    for n in n_values:
+        total_times = []
+        cf_values_n = []  # Значення CF для даного n
+        print(f"Експеримент для кількості парламентарів n = {n}:")
+        for run in range(1, runs + 1):
+            matrix = create_matrix_of_parlament(n, t, K)
+            start_time = time.time()
+            covering_set = min_column_max_row.find_min_covering_set(matrix)
+            end_time = time.time()
+            elapsed_time = end_time - start_time
+            total_times.append(elapsed_time)
+            cf = len(covering_set)
+            cf_values_n.append(cf)
+            print(f"Прогін {run}: {elapsed_time:.8f}, CF = {cf}")
+
+        avg_time = sum(total_times) / runs
+        print(f"Середній час виконання для n = {n}: {avg_time}")
+        results.append(total_times)
+        cf_values.append(cf_values_n)
+        avg_cf = sum(cf_values_n) / len(cf_values_n)
+        print(f"Середнє значення CF для n = {n}: {avg_cf}")
+        std_cf = statistics.stdev(cf_values_n)
+        print(f"Стандартне відхилення значень CF для n = {n}: {std_cf}")
+
+    # Plotting CF values against the number of parliament members
+    plt.figure(figsize=(10, 6))
+    markers = ['o', 's', 'D']
+    for i in range(len(n_values)):
+        plt.plot(range(1, runs + 1), cf_values[i], marker=markers[i], label=f'n = {n_values[i]}')
+    plt.xlabel('Прогін')
+    plt.ylabel('Значення ЦФ')
+    plt.title('Залежність значення ЦФ від параметру " кількість парламентарів"( дослідження ефективності алгоритму)')
+    plt.legend()
+    plt.grid(True)
+    plt.show()
+
+    return n_values, results, cf_values
 def precision_test_1():
     global precision_list_lr, precision_list_min_column_max_row
     t = 3
