@@ -58,4 +58,3 @@ class Greedy:
         self.features = self.features[mask]
         self.parl = self.parl[self.parl !=parl]
         self.result[parl] = 1
-

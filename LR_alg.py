@@ -5,6 +5,7 @@ import sys
 
 class LR:
     def __init__(self, A):
+
         self.A = np.array(A)
         self.table, self.basis = self.tableau()
         self.n = 0

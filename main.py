@@ -148,25 +148,27 @@ def choose_type_of_experiment():
     while True:
         option_to_enter = input(
             "Виберіть тип експерименту: \n 1. Алгоритм лінійної релаксації \n 2. Алгоритм покриття методом 'мінімальний стовпець -максимальний рядок' \n 3."
-            " Генетичний алгоритм \n 4. Жадібний \n 5. Тест на трудомісткість \n 6. Тест на ефективність \n 7. Вихід \n >>>> ")
+            " Генетичний алгоритм \n 4. Тест на трудомісткість \n 5. Тест на ефективність \n 6. Вихід \n >>>> ")
         if int(option_to_enter) == 1:
             parl = int(input("Введіть кількість парламентарів: \n"))
             features = int(input("Введіть кількість ознак: \n"))
             exp.LR_exp(parl, features)
         elif int(option_to_enter) == 2:
-            print("implement")
+            n_values, results = exp.min_c_max_r_experiment()
+            exp.plot_results(n_values, results)
         elif int(option_to_enter) == 3:
             number_of_parliamentarians, number_of_characteristics, number_of_sign, param = enter_data_to_exp_ga()
             exp.genetic_alg(number_of_parliamentarians, number_of_characteristics, number_of_sign, param)
         elif int(option_to_enter) == 4:
-
-            exp.genetic_alg2()
-        elif int(option_to_enter) == 5:
              exp.time_test_n()
              exp.time_test_k()
+        elif int(option_to_enter) == 5:
+            exp.precision_test_1()
+            exp.precision_test_2()
+            exp.precision_test_3()
+            exp.precision_test_4()
+            exp.precision_test_5()
         elif int(option_to_enter) == 6:
-            print("implement")
-        elif int(option_to_enter) == 7:
             break
         else:
             print("Неправильна відповідь")

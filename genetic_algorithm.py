@@ -244,7 +244,8 @@ def get_one_solution(matrix_of_parlament, population ):
           index_of_parl.append(i+1)
     return index_of_parl
 
+
 def start(matrix_of_parlament):
-      population = create_population(matrix_of_parlament)
-      index_of_parl = get_one_solution(matrix_of_parlament, population)
-      return index_of_parl
+    population = create_population(matrix_of_parlament)
+    index_of_parl = get_one_solution(matrix_of_parlament, population)
+    return index_of_parl
