@@ -166,11 +166,11 @@ def choose_type_of_experiment():
              exp.time_test_n()
              exp.time_test_k()
         elif int(option_to_enter) == 5:
-            exp.precision_test_1()
-            exp.precision_test_2()
-            exp.precision_test_3()
+            # exp.precision_test_1()
+            # exp.precision_test_2()
+            # exp.precision_test_3()
             exp.precision_test_4()
-            exp.precision_test_5()
+            # exp.precision_test_5()
         elif int(option_to_enter) == 6:
             break
         else:
