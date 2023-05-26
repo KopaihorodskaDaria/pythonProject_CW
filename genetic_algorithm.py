@@ -169,7 +169,7 @@ def update_population(population, first_child, second_child):
 def get_one_solution_with_print(matrix_of_parlament, population ):
     iteration = 0
     number_of_iteration_to_stop = 0
-    stop_number_of_iteration = 20
+    stop_number_of_iteration = 15
     prev_min_useful = np.min(counter_of_useful(population))
     print("Значення ЦФ: ", prev_min_useful)
     while True:

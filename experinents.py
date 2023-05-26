@@ -12,12 +12,6 @@ import matplotlib.pyplot as plt
 import min_column_max_row
 
 
-def copy_matrix(matrix1, matrix2):
-    for i in range(len(matrix1)):
-        for j in range(len(matrix1[i])):
-            matrix2[i][j] = matrix1[i][j]
-    return matrix2
-
 
 def create_matrix_of_parlament(n, K_characteristik, k):
     matrix = np.zeros((n, k), dtype=int)
@@ -74,17 +68,19 @@ def LR_exp(parl, features):
 
 
 def time_test_n():
-    print("Вплив параметру розмірності задачі на трудомісткість алгоритму")
     t = 3
     K_sign = 10
     param = [5, 10, 20]
     print("Задані параметри:")
     print(param)
     print(f"Для {t} характеристик та {K_sign} ознак")
-    time_list_ga = np.zeros((len(param), 20))
-    time_list_lr = np.zeros((len(param), 20))
-    time_min_column_max_row = np.zeros((len(param), 20))
-    for i in range(0, 20):
+    iteration = 20
+    time_list_ga = np.zeros((len(param), iteration))
+    time_list_lr = np.zeros((len(param), iteration))
+    time_min_column_max_row = np.zeros((len(param), iteration))
+    time_greedy_alg = np.zeros((len(param), iteration))
+
+    for i in range(0, iteration):
         for j in range(0, len(param)):
             # Генетичний алгоритм
             matrix = create_matrix_of_parlament(param[j], t, K_sign)
@@ -98,38 +94,60 @@ def time_test_n():
             time_list_lr[j][i] = (time.time() - start_time)
             # Алгоритм мінімальний стовпець -максимальний рядок
             start_time = time.time()
-            min_column_max_row.find_min_covering_set(matrix)  # сюда
+            min_column_max_row.find_min_covering_set(matrix)
             time
             time_min_column_max_row[j][i] = (time.time() - start_time)
+            # Жадібний алгоритм
+            start_time = time.time()
+            a = Greedy_alg.Greedy(matrix)
+            time
+            time_greedy_alg[j][i] = (time.time() - start_time)
+    m = np.arange(0, iteration)
     vals_ga = np.zeros(len(param))
+    vals_lr = np.zeros(len(param))
+    vals_min_column_max_row = np.zeros(len(param))
+    vals_greedy_alg = np.zeros(len(param))
+
     for i in range(0, len(param)):
         vals_ga[i] = np.mean(time_list_ga[i, :])
-    vals_lr = np.zeros(len(param))
-    for i in range(0, len(param)):
         vals_lr[i] = np.mean(time_list_lr[i, :])
-    vals_min_column_max_row = np.zeros(len(param))  # потом це можна прибрати
-    for i in range(0, len(param)):
         vals_min_column_max_row[i] = np.mean(time_min_column_max_row[i, :])
+        vals_greedy_alg[i] = np.mean(time_greedy_alg[i, :])
+        plt.title(f"Час роботи алгоритмів для значення n = {param[i]}")
+        plt.plot(m, time_list_ga[i, :], label= "Генетичний алгоритм")
+        plt.plot(m, time_list_lr[i, :], label= "Лінійної релаксації")
+        plt.plot(m, time_min_column_max_row[i, :], label="Мін. рядок -макс. стовпець")
+        plt.plot(m, time_greedy_alg[i, :], label="Жадібний")
+        plt.xlabel("Кількість ітерацій")
+        plt.ylabel("Час в ms")
+        plt.grid(True)
+        plt.legend(loc='upper right', fontsize=6)
+        plt.show()
+
+    print("Середній час роботи алгоритму в залежності від кількості ознак")
     print("Генетичний алгоритм")
     print(vals_ga)
     print("Алгоритм лінійної релаксації")
     print(vals_lr)
-    print("Алгоритм мінімальний стовпець -максимальний рядок")  # потом це можна прибрати
+    print("Алгоритм мінімальний стовпець -максимальний рядок")
     print(vals_min_column_max_row)
-
+    print("Жадібний алгоритм")
+    print(vals_greedy_alg)
 
 def time_test_k():
-    print("Вплив параметру кількості ознак задачі на трудомісткість алгоритму")
     t = 3
     n = 20
     param = [5, 10, 20]
     print("Задані параметри:")
     print(param)
     print(f"Для {t} характеристик та {n} парламентарів")
-    time_list_ga = np.zeros((len(param), 20))
-    time_list_lr = np.zeros((len(param), 20))
-    time_min_column_max_row = np.zeros((len(param), 20))
-    for i in range(0, 20):
+    iteration = 20
+    time_list_ga = np.zeros((len(param), iteration))
+    time_list_lr = np.zeros((len(param), iteration))
+    time_min_column_max_row = np.zeros((len(param), iteration))
+    time_greedy_alg = np.zeros((len(param), iteration))
+
+    for i in range(0, iteration):
         for j in range(0, len(param)):
             # Генетичний алгоритм
             matrix = create_matrix_of_parlament(n, t, param[j])
@@ -144,32 +162,51 @@ def time_test_k():
             time_list_lr[j][i] = (time.time() - start_time)
             # Алгоритм мінімальний стовпець -максимальний рядок
             start_time = time.time()
-            min_column_max_row.find_min_covering_set(matrix)  # сюда
+            min_column_max_row.find_min_covering_set(matrix)
             time
             time_min_column_max_row[j][i] = (time.time() - start_time)
+            # Жадібний алгоритм
+            start_time = time.time()
+            Greedy_alg.Greedy(matrix)
+            time
+            time_greedy_alg[j][i] = (time.time() - start_time)
+    m = np.arange(0, iteration)
     vals_ga = np.zeros(len(param))
+    vals_lr = np.zeros(len(param))
+    vals_min_column_max_row = np.zeros(len(param))
+    vals_greedy_alg = np.zeros(len(param))
+
     for i in range(0, len(param)):
         vals_ga[i] = np.mean(time_list_ga[i, :])
-    vals_lr = np.zeros(len(param))
-    for i in range(0, len(param)):
         vals_lr[i] = np.mean(time_list_lr[i, :])
-    vals_min_column_max_row = np.zeros(len(param))  # потом це можна прибрати
-    for i in range(0, len(param)):
         vals_min_column_max_row[i] = np.mean(time_min_column_max_row[i, :])
+        vals_greedy_alg[i] = np.mean(time_greedy_alg[i, :])
+        plt.title(f"Час роботи алгоритмів для значення k = {param[i]}")
+        plt.plot(m, time_list_ga[i, :], label="Генетичний алгоритм")
+        plt.plot(m, time_list_lr[i, :], label="Лінійної релаксації")
+        plt.plot(m, time_min_column_max_row[i, :], label="Мін. рядок -макс. стовпець")
+        plt.plot(m, time_greedy_alg[i, :], label="Жадібний")
+        plt.xlabel("Кількість ітерацій")
+        plt.ylabel("Час в ms")
+        plt.grid(True)
+        plt.legend(loc='upper right', fontsize=6)
+        plt.show()
+
+    print("Середній час роботи алгоритму в залежності від кількості парламентарів")
     print("Генетичний алгоритм")
     print(vals_ga)
     print("Алгоритм лінійної релаксації")
     print(vals_lr)
     print("Алгоритм мінімальний стовпець -максимальний рядок")
     print(vals_min_column_max_row)
+    print("Жадібний алгоритм")
+    print(vals_greedy_alg)
 
 
 def genetic_alg(n , t, K_sign, param ):
     print("Генетичний експеримент")
     print("Параметр: умова завершення роботи алгоритмів")
     iteration = 20
-    # population_temp = [[0] * len(population[len(population) - 1]) for _ in range(len(population))]
-    # population_temp = copy_matrix(population, population_temp)
     iteration_list = np.zeros((len(param), iteration))
     for i in range(iteration):
         matrix = create_matrix_of_parlament(n, t, K_sign)

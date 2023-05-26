@@ -156,21 +156,20 @@ def choose_type_of_experiment():
         elif int(option_to_enter) == 2:
             print("Дослідження ефективності алгоритму")
             exp.min_max_experiment2()
-            # print("Дослідження трудомісткості алгоритму")
-            # n_values, results = exp.min_c_max_r_experiment()
-            # exp.plot_results(n_values, results)
         elif int(option_to_enter) == 3:
             number_of_parliamentarians, number_of_characteristics, number_of_sign, param = enter_data_to_exp_ga()
             exp.genetic_alg(number_of_parliamentarians, number_of_characteristics, number_of_sign, param)
         elif int(option_to_enter) == 4:
-             exp.time_test_n()
-             exp.time_test_k()
+            print("Вплив кількості парламентарів задачі на трудомісткість алгоритму")
+            exp.time_test_n()
+            print("Вплив кількості ознак задачі на трудомісткість алгоритму")
+            exp.time_test_k()
         elif int(option_to_enter) == 5:
             exp.precision_test_3()
             exp.precision_test_4()
         elif int(option_to_enter) == 6:
             exp.precision_test_5()
-        elif int(option_to_enter) ==7:
+        elif int(option_to_enter) == 7:
             break
         else:
             print("Неправильна відповідь")
