@@ -449,6 +449,7 @@ def precision_test_2():
 
 def precision_test_3():
     global CFsum_min_column_max_row, CFsum_lr, CFsum_ga, CFsum_gr
+    print("Дослідження впливу кількості парламентарів на ефективність алгоритмів")
     t = 10  # Розмірність задачі
     K = 20  # кількість ознак
     param = [10, 15, 20]
@@ -496,129 +497,129 @@ def precision_test_3():
         CF3 = abs(CFavg3 - CFAvr) / CFAvr
         CF4 = abs(CFavg4 - CFAvr) / CFAvr
 
-        print(f"t = {param[j]}:")
-        print(f"CF1: {CF1}")
-        print(f"CF2: {CF2}")
-        print(f"CF3: {CF3}")
-        print(f"CF3: {CF4}")
+        print(f"Параметр = {param[j]}:")
+        print(f"Лінійна релаксація: {CF1}")
+        print(f"Генетичний алгоритм: {CF2}")
+        print(f"Мінімальний стовпець - максимальний рядок: {CF3}")
+        print(f"Жадібний алгоритм: {CF4}")
         print()
 
 
 
 def precision_test_4():
     global CFsum_min_column_max_row, CFsum_lr, CFsum_ga, CFsum_gr
-    n = 15  # Розмірність задачі
-    t = 2
-    param = [6, 8, 16]
+    print("Дослідження впливу кількості ознак на ефективність алгоритмів")
+    t = 5
+    n = 20
+    param = [10, 15, 20]
+    list_cf = np.ones((3, 20))
 
-    CFsum_lr = 0
-    CFsum_min_column_max_row = 0
-    CFsum_ga = 0
-    CFsum_gr = 0
+    for j in range(len(param)):
+        CFsum_lr = 0
+        CFsum_min_column_max_row = 0
+        CFsum_ga = 0
+        CFavg = 0
+        CFsum_gr = 0
 
-    for i in range(1, 21):
-        CFsum_lr_curr = 0
-        CFsum_min_column_max_row_curr = 0
-        CFsum_ga_curr = 0
-        CFsum_gr_curr = 0
-
-        for j in range(len(param)):
+        for i in range(1, 21):
             matrix = create_matrix_of_parlament(n, t, param[j])
-
             # Розв'язок задачі P алгоритмом "Жадібний алгоритм"
             model = Greedy_alg.Greedy(matrix)
             CF_gr = model.Solve()
-            l1 = len(CF_gr)
-            CFsum_gr_curr += l1
+            CFsum_gr += len(CF_gr)
 
             # Розв'язок задачі P алгоритмом "Лінійної релаксації"
             model = LR_alg.LR(matrix)
             CF_lr = model.Solve()
-            l2 = len(CF_lr)
-            CFsum_lr_curr += l2
+            CFsum_lr += len(CF_lr)
 
             # Розв'язок задачі P алгоритмом "Мінімальний стовпець - максимальний рядок"
             CF_min_column_max_row = min_column_max_row.find_min_covering_set(matrix)
-            l3 = len(CF_min_column_max_row)
-            CFsum_min_column_max_row_curr += l3
+            CFsum_min_column_max_row += len(CF_min_column_max_row)
 
             # Розв'язок задачі P алгоритмом "Генетичний алгоритм"
             CF_ga = ga.start(matrix)
-            l4 = len(CF_ga)
-            CFsum_ga_curr += l4
+            CFsum_ga += len(CF_ga)
 
-        CFsum_lr += CFsum_lr_curr
-        CFsum_min_column_max_row += CFsum_min_column_max_row_curr
-        CFsum_ga += CFsum_ga_curr
-        CFsum_gr += CFsum_gr_curr
-
-        CFavg1 = CFsum_lr / (20 * len(param))
-        CFavg2 = CFsum_ga / (20 * len(param))
-        CFavg3 = CFsum_min_column_max_row / (20 * len(param))
-        CFavg4 = CFsum_gr / (20 * len(param))
-
-        deviation_l1 = abs(CFavg1 - l1) / CFavg1
-        deviation_l2 = abs(CFavg2 - l2) / CFavg2
-        deviation_l3 = abs(CFavg3 - l3) / CFavg3
-        deviation_l4 = abs(CFavg4 - l4) / CFavg4
-
-        avg_deviation = (deviation_l1 + deviation_l2 + deviation_l3 + deviation_l4) / 4
-
-        print(f"t = {t}:")
-        print(f"Deviation l1: {deviation_l1}")
-        print(f"Deviation l2: {deviation_l2}")
-        print(f"Deviation l3: {deviation_l3}")
-        print(f"Deviation l4: {deviation_l4}")
-        print(f"Avg Deviation: {avg_deviation}")
-        print()
-def precision_test_5():
-    print("Вплив параметру розмірності задачі на ефективність алгоритму")
-    t = 3
-    K_sign = 6
-    param = [5, 10, 20]
-    print("Задані параметри:")
-    print(param)
-    print(f"Для {t} характеристик та {K_sign} ознак")
-
-
-    for i in range(0, 20):
-        for j in range(0, len(param)):
-            # Генетичний алгоритм
-            matrix = create_matrix_of_parlament(param[j], t, K_sign)
-            result_ga = ga.start(matrix)
-            precision_list_ga = len(result_ga)
-
-            # Алгоритм лінійної релаксації
-            model = LR_alg.LR(matrix)
-            result_lr = model.Solve()
-            precision_list_lr = len(result_lr)
-
-            # Жадібний алгоритм
+            # Розв'язок задачі P алгоритмом "Жадібний алгоритм"
             model = Greedy_alg.Greedy(matrix)
-            result_gr = model.Solve()
-            precision_list_gr = len(result_gr)
+            CF_gr = model.Solve()
+            CFsum_gr += len(CF_gr)
 
-            # Алгоритм мінімальний стовпець - максимальний рядок
-            result_min_column_max_row = min_column_max_row.find_min_covering_set(matrix)
-            precision_list_min_column_max_row = len(result_min_column_max_row)
+        CFavg1 = CFsum_lr / 20
+        CFavg2 = CFsum_ga / 20
+        CFavg3 = CFsum_min_column_max_row / 20
+        CFavg4 = CFsum_gr / 20
+        CFAvr = (CFavg1+ CFavg2 +  CFavg3+  CFavg4)/4
+        CF1 = abs(CFavg1 - CFAvr) / CFAvr
+        CF2 = abs(CFavg2 - CFAvr) / CFAvr
+        CF3 = abs(CFavg3 - CFAvr) / CFAvr
+        CF4 = abs(CFavg4 - CFAvr) / CFAvr
 
-            avg_precision_ga = np.mean(precision_list_ga, axis=1)
-            avg_precision_lr = np.mean(precision_list_lr, axis=1)
-            avg_precision_min_column_max_row = np.mean(precision_list_min_column_max_row, axis=1)
-            avg_precision_gr = np.mean(precision_list_gr, axis=1)
+        print(f"Параметр = {param[j]}:")
+        print(f"Лінійна релаксація: {CF1}")
+        print(f"Генетичний алгоритм: {CF2}")
+        print(f"Мінімальний стовпець - максимальний рядок: {CF3}")
+        print(f"Жадібний алгоритм: {CF4}")
+        print()
 
-            deviations_ga = np.abs(avg_precision_ga - precision_list_ga) / avg_precision_ga
-            deviations_lr = np.abs(avg_precision_lr[:, np.newaxis] - precision_list_lr) / avg_precision_lr[:, np.newaxis]
-            deviations_min_column_max_row = np.abs(avg_precision_min_column_max_row[:, np.newaxis] - precision_list_min_column_max_row) / avg_precision_min_column_max_row[:, np.newaxis]
-            deviations_gr = np.abs(avg_precision_gr[:, np.newaxis] - precision_list_gr) / avg_precision_gr[:, np.newaxis]
-            print("Генетичний алгоритм")
-            print(deviations_ga)
-            print("Алгоритм лінійної релаксації")
-            print(deviations_lr)
-            print("Алгоритм мінімальний стовпець - максимальний рядок")
-            print(deviations_min_column_max_row)
-            print("Алгоритм мінімальний стовпець - максимальний рядок")
-            print(deviations_gr)
+
+def precision_test_5():
+        global CFsum_min_column_max_row, CFsum_lr, CFsum_ga, CFsum_gr
+        print("Дослідження впливу параметрів задачі на ефективність алгоритмів")
+        n = 30
+        K = 30
+        param = [2, 7, 15]
+        list_cf = np.ones((3, 20))
+
+        for j in range(len(param)):
+            CFsum_lr = 0
+            CFsum_min_column_max_row = 0
+            CFsum_ga = 0
+            CFavg = 0
+            CFsum_gr = 0
+
+            for i in range(1, 21):
+                matrix = create_matrix_of_parlament(n, param[j], K)
+                # Розв'язок задачі P алгоритмом "Жадібний алгоритм"
+                model = Greedy_alg.Greedy(matrix)
+                CF_gr = model.Solve()
+                CFsum_gr += len(CF_gr)
+
+                # Розв'язок задачі P алгоритмом "Лінійної релаксації"
+                model = LR_alg.LR(matrix)
+                CF_lr = model.Solve()
+                CFsum_lr += len(CF_lr)
+
+                # Розв'язок задачі P алгоритмом "Мінімальний стовпець - максимальний рядок"
+                CF_min_column_max_row = min_column_max_row.find_min_covering_set(matrix)
+                CFsum_min_column_max_row += len(CF_min_column_max_row)
+
+                # Розв'язок задачі P алгоритмом "Генетичний алгоритм"
+                CF_ga = ga.start(matrix)
+                CFsum_ga += len(CF_ga)
+
+                # Розв'язок задачі P алгоритмом "Жадібний алгоритм"
+                model = Greedy_alg.Greedy(matrix)
+                CF_gr = model.Solve()
+                CFsum_gr += len(CF_gr)
+
+            CFavg1 = CFsum_lr / 20
+            CFavg2 = CFsum_ga / 20
+            CFavg3 = CFsum_min_column_max_row / 20
+            CFavg4 = CFsum_gr / 20
+            CFAvr = (CFavg1 + CFavg2 + CFavg3 + CFavg4) / 4
+            CF1 = abs(CFavg1 - CFAvr) / CFAvr
+            CF2 = abs(CFavg2 - CFAvr) / CFAvr
+            CF3 = abs(CFavg3 - CFAvr) / CFAvr
+            CF4 = abs(CFavg4 - CFAvr) / CFAvr
+
+            print(f"Параметр = {param[j]}:")
+            print(f"Лінійна релаксація: {CF1}")
+            print(f"Генетичний алгоритм: {CF2}")
+            print(f"Мінімальний стовпець - максимальний рядок: {CF3}")
+            print(f"Жадібний алгоритм: {CF4}")
+            print()
 
     # # Побудова графіка
     # x = np.arange(1, 21)

@@ -148,7 +148,7 @@ def choose_type_of_experiment():
     while True:
         option_to_enter = input(
             "Виберіть тип експерименту: \n 1. Алгоритм лінійної релаксації \n 2. Алгоритм покриття методом 'мінімальний стовпець -максимальний рядок' \n 3."
-            " Генетичний алгоритм \n 4. Тест на трудомісткість \n 5. Тест на ефективність \n 6. Вихід \n >>>> ")
+            " Генетичний алгоритм \n 4. Тест на трудомісткість \n 5. Тест на ефективність \n 6. Вплив параметрів задачі на ефективність \n 7. Вихід \n >>>> ")
         if int(option_to_enter) == 1:
             parl = int(input("Введіть кількість парламентарів: \n"))
             features = int(input("Введіть кількість ознак: \n"))
@@ -166,12 +166,11 @@ def choose_type_of_experiment():
              exp.time_test_n()
              exp.time_test_k()
         elif int(option_to_enter) == 5:
-            exp.precision_test_1()
-            exp.precision_test_2()
             exp.precision_test_3()
             exp.precision_test_4()
-            exp.precision_test_5()
         elif int(option_to_enter) == 6:
+            exp.precision_test_5()
+        elif int(option_to_enter) ==7:
             break
         else:
             print("Неправильна відповідь")
