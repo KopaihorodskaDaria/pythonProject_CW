@@ -453,15 +453,16 @@ def precision_test_3():
     t = 10  # Розмірність задачі
     K = 20  # кількість ознак
     param = [10, 15, 20]
+    list_cf = np.ones((3, 20))
 
-    for i in range(1, 21):
+    for j in range(len(param)):
         CFsum_lr = 0
         CFsum_min_column_max_row = 0
         CFsum_ga = 0
         CFavg = 0
         CFsum_gr = 0
 
-        for j in range(len(param)):
+        for i in range(1, 21):
             matrix = create_matrix_of_parlament(param[j], t,K )
             # Розв'язок задачі P алгоритмом "Жадібний алгоритм"
             model = Greedy_alg.Greedy(matrix)
@@ -485,21 +486,24 @@ def precision_test_3():
             model = Greedy_alg.Greedy(matrix)
             CF_gr = model.Solve()
             CFsum_gr += len(CF_gr)
-            CFavg1 = CFsum_lr / 20
-            CFavg2 = CFsum_ga / 20
-            CFavg3 = CFsum_min_column_max_row / 20
-            CFavg4 = CFsum_gr / 20
-            CF1 = abs(CFavg1 - CFsum_lr) / CFavg1
-            CF2 = abs(CFavg2 - CFsum_ga) / CFavg2
-            CF3 = abs(CFavg3 - CFsum_min_column_max_row) / CFavg3
-            CF4 = abs(CFavg4 - CFsum_gr) / CFavg4
 
-    print(f"t = {t}:")
-    print(f"CF1: {CF1}")
-    print(f"CF2: {CF2}")
-    print(f"CF3: {CF3}")
-    print(f"CF3: {CF4}")
-    print()
+        CFavg1 = CFsum_lr / 20
+        CFavg2 = CFsum_ga / 20
+        CFavg3 = CFsum_min_column_max_row / 20
+        CFavg4 = CFsum_gr / 20
+        CFAvr = (CFavg1+ CFavg2 +  CFavg3+  CFavg4)/4
+        CF1 = abs(CFavg1 - CFAvr) / CFAvr
+        CF2 = abs(CFavg2 - CFAvr) / CFAvr
+        CF3 = abs(CFavg3 - CFAvr) / CFAvr
+        CF4 = abs(CFavg4 - CFAvr) / CFAvr
+
+        print(f"t = {param[j]}:")
+        print(f"CF1: {CF1}")
+        print(f"CF2: {CF2}")
+        print(f"CF3: {CF3}")
+        print(f"CF3: {CF4}")
+        print()
+
 
 
 def precision_test_4():
